@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import AdminLogin from './screens/AdminLogin';
+import HomePage from './screens/HomePage';
+import { auth } from './firebase';
+import { onAuthStateChanged } from 'firebase/auth';
+import ManageStoreMap from './screens/ManageStoreMap';
+import ManageItems from './screens/ManageItem';
+import ManageInventory from './screens/ManageInventory';
+import ActiveCarts from './screens/ActiveCarts';
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, setUser);
+    return () => unsubscribe(); // cleanup
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={user ? <HomePage /> : <Navigate to="/login" />} />
+        <Route path="/login" element={!user ? <AdminLogin /> : <Navigate to="/" />} />
+          <Route path="/manage-map" element={<ManageStoreMap />} />
+          <Route path="/manage-item" element={<ManageItems />} />
+          <Route path="/manage-inventory" element={<ManageInventory />} />
+          <Route path="/active-carts" element={<ActiveCarts />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -1,0 +1,105 @@
+/* Fullscreen layout */
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard {
+  background-color: #23472f;
+  min-height: 100vh; /* Full height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center */
+  align-items: center; /* Horizontally center */
+  color: white;
+  padding: 2rem;
+}
+
+.dashboard-title {
+  font-size: 28px;
+  background-color: white;
+  color: black;
+  padding: 0.6rem 2rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 2rem;
+  justify-items: center;
+}
+
+.dashboard-option {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  color: black;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 160px;
+}
+.dashboard-option:hover {
+  transform: scale(1.05);
+}
+
+.dashboard-option img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-option p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.logout-btn {
+  padding: 0.7rem 2rem;
+  font-size: 16px;
+  border: none;
+  border-radius: 1rem;
+  background: linear-gradient(to right, #800000, #cc0000);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background: linear-gradient(to right, #990000, #e60000);
+}
+
+/* 📱 Mobile Responsive */
+@media (max-width: 600px) {
+  .dashboard-title {
+    font-size: 22px;
+    padding: 0.4rem 1.2rem;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .dashboard-option img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dashboard-option p {
+    font-size: 14px;
+  }
+
+  .logout-btn {
+    font-size: 14px;
+    padding: 0.5rem 1.2rem;
+  }
+}
