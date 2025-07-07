@@ -16,7 +16,7 @@ const HomePage = () => {
 
   return (
     <div className="dashboard-container">
-      <h2 className="page-title">Manage Inventory</h2>
+      <h2 className="page-title">Home</h2>
         <div className="dashboard-body">
         <div className="dashboard-card" onClick={() => navigate('/manage-map')}>
           <img src={storeMapIcon} alt="Manage Store Map" />
