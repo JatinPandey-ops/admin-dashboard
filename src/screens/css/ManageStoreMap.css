@@ -1,111 +1,125 @@
 .map-container {
-  min-height: 100vh;
-  background-color: #23472f;
-  color: white;
   padding: 2rem;
-  font-family: sans-serif;
-  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #FFC700, #FFDA29);
+  min-height: 100vh;
+  margin-top: 30rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-h2 {
-  background: white;
-  color: black;
-  padding: 0.6rem 2rem;
-  border-radius: 1rem;
-  margin-bottom: 2rem;
-  display: inline-block;
+.page-title {
+  font-size: 2.2rem;
+  color: #FF0000;
+  margin-bottom: 1.5rem;
 }
 
 .visual-map {
   display: flex;
-  gap: 2rem;
-  justify-content: center;
-  align-items: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
+  gap: 1.5rem;
+  justify-content: center;
 }
 
-.aisle-column {
-  background-color: #ffffff15;
+.aisle-card {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  width: 300px;
   padding: 1rem;
-  border-radius: 1rem;
-  border: 1px solid #ffffff30;
-  width: 180px;
-  flex-shrink: 0;
+  backdrop-filter: blur(15px);
 }
 
-.aisle-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  background: white;
-  color: #23472f;
+.aisle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.aisle-category {
+  background: #FF0000;
+  color: #fff;
+  padding: 0.3rem 0.6rem;
   border-radius: 8px;
-  padding: 0.3rem;
+  font-size: 0.8rem;
 }
 
-.shelf-cell {
-  background: #fff;
-  color: #000;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+.shelf-block {
   margin-bottom: 1rem;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
 }
 
-.shelf-title {
-  font-weight: bold;
-  font-size: 14px;
+.shelf-block h4 {
+  color: #d40000;
+  margin: 0.5rem 0;
+}
+
+.row-block {
   margin-bottom: 0.5rem;
 }
 
-.shelf-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columns = 10 items total in 5 rows */
-  gap: 0.4rem;
+.row-label {
+  font-weight: 600;
+  color: #333;
 }
 
-.product-slot {
-  background-color: #d2f2d2;
-  border: 1px solid #90c490;
-  border-radius: 5px;
-  padding: 0.4rem;
-  font-size: 13px;
-  word-break: break-word;
+.row-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+
+.item-pill {
+  background: #FF0000;
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.empty-slot {
+  color: #777;
+  font-style: italic;
 }
 
 .map-controls {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.map-controls h4 {
+  color: #FF0000;
+  margin-bottom: 1rem;
 }
 
 .map-controls select,
-.map-controls button {
+.update-btn {
+  margin: 0.5rem;
   padding: 0.6rem 1rem;
-  border-radius: 1rem;
-  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.update-btn {
+  background: #FF0000;
+  color: #fff;
   border: none;
-}
-
-.map-controls button {
-  background: linear-gradient(to right, #800000, #cc0000);
-  color: white;
   cursor: pointer;
-  font-weight: bold;
 }
 
-.map-controls button:hover {
-  background: linear-gradient(to right, #990000, #e60000);
+.update-btn:hover {
+  background: #d40000;
 }
 
-@media (max-width: 600px) {
-  .aisle-column {
+@media (max-width: 768px) {
+  .aisle-card {
     width: 100%;
   }
-  .shelf-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .map-container {
+    margin-top : 79rem
   }
 }

@@ -8,7 +8,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import ManageStoreMap from './screens/ManageStoreMap';
 import ManageItems from './screens/ManageItem';
 import ManageInventory from './screens/ManageInventory';
-import ActiveCarts from './screens/ActiveCarts';
+import Header from "./components/Header"
 
 function App() {
   const [user, setUser] = useState(null);
@@ -19,14 +19,14 @@ function App() {
   }, []);
 
   return (
-    <Router>
+     <Router>
+      {user && <Header />}
       <Routes>
         <Route path="/" element={user ? <HomePage /> : <Navigate to="/login" />} />
         <Route path="/login" element={!user ? <AdminLogin /> : <Navigate to="/" />} />
-          <Route path="/manage-map" element={<ManageStoreMap />} />
-          <Route path="/manage-item" element={<ManageItems />} />
-          <Route path="/manage-inventory" element={<ManageInventory />} />
-          <Route path="/active-carts" element={<ActiveCarts />} />
+        <Route path="/manage-map" element={<ManageStoreMap />} />
+        <Route path="/manage-item" element={<ManageItems />} />
+        <Route path="/manage-inventory" element={<ManageInventory />} />
       </Routes>
     </Router>
   );

@@ -1,4 +1,3 @@
-// ManageStoreMap.js
 import React, { useEffect, useState } from 'react';
 import { db } from "../firebase";
 import {
@@ -14,9 +13,16 @@ export default function ManageStoreMap() {
   const [selectedItemId, setSelectedItemId] = useState('');
   const [selectedAisle, setSelectedAisle] = useState('');
   const [selectedShelf, setSelectedShelf] = useState('');
+  const [selectedRow, setSelectedRow] = useState('');
 
-  const aisles = Array.from({ length: 5 }, (_, i) => `Aisle ${i + 1}`);
-  const shelves = Array.from({ length: 3 }, (_, i) => `Shelf ${i + 1}`);
+  const aisles = [
+    { key: 'Aisle 1', name: 'Beauty & Care' },
+    { key: 'Aisle 2', name: 'Hardware & Electrical' },
+    { key: 'Aisle 3', name: 'Household' },
+    { key: 'Aisle 4', name: 'Sports' },
+  ];
+  const shelves = ['Shelf 1', 'Shelf 2', 'Shelf 3'];
+  const rows = ['Row A', 'Row B', 'Row C'];
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -31,9 +37,12 @@ export default function ManageStoreMap() {
   }, []);
 
   const handleUpdate = async () => {
-    if (!selectedItemId || !selectedAisle || !selectedShelf) return;
+    if (!selectedItemId || !selectedAisle || !selectedShelf || !selectedRow) {
+      alert('Please select all fields');
+      return;
+    }
 
-    const location = `${selectedAisle}, ${selectedShelf}`;
+    const location = `${selectedAisle}, ${selectedShelf}, ${selectedRow}`;
     const itemRef = doc(db, 'items', selectedItemId);
     await updateDoc(itemRef, { location });
 
@@ -44,40 +53,56 @@ export default function ManageStoreMap() {
     setSelectedItemId('');
     setSelectedAisle('');
     setSelectedShelf('');
-    alert('Location updated!');
+    setSelectedRow('');
+    alert('✅ Location updated!');
   };
 
-  // Build visual map matrix
+  // Build visual map matrix with Rows
   const mapMatrix = {};
   aisles.forEach(aisle => {
-    mapMatrix[aisle] = {};
+    mapMatrix[aisle.key] = {};
     shelves.forEach(shelf => {
-      mapMatrix[aisle][shelf] = [];
+      mapMatrix[aisle.key][shelf] = {};
+      rows.forEach(row => {
+        mapMatrix[aisle.key][shelf][row] = [];
+      });
     });
   });
   items.forEach(item => {
-    const [aisle, shelf] = item.location.split(', ').map(str => str.trim());
-    if (mapMatrix[aisle] && mapMatrix[aisle][shelf]) {
-      mapMatrix[aisle][shelf].push(item.name);
+    const [aisle, shelf, row] = item.location?.split(', ').map(str => str.trim()) || [];
+    if (mapMatrix[aisle]?.[shelf]?.[row]) {
+      mapMatrix[aisle][shelf][row].push(item.name);
     }
   });
 
   return (
     <div className="map-container">
-      <h2>Manage Store Map</h2>
+      <h2 className="page-title">Manage Store Map</h2>
 
       <div className="visual-map">
         {aisles.map((aisle) => (
-          <div key={aisle} className="aisle-column">
-            <div className="aisle-title">{aisle}</div>
+          <div key={aisle.key} className="aisle-card">
+            <div className="aisle-header">
+              <h3>{aisle.key}</h3>
+              <span className="aisle-category">{aisle.name}</span>
+            </div>
             {shelves.map((shelf) => (
-              <div key={shelf} className="shelf-cell">
-                <div className="shelf-title">{shelf}</div>
-                <div className="shelf-grid">
-                  {mapMatrix[aisle][shelf].map((itemName, idx) => (
-                    <div key={idx} className="product-slot">{itemName}</div>
-                  ))}
-                </div>
+              <div key={shelf} className="shelf-block">
+                <h4>{shelf}</h4>
+                {rows.map((row) => (
+                  <div key={row} className="row-block">
+                    <span className="row-label">{row}</span>
+                    <div className="row-items">
+                      {mapMatrix[aisle.key][shelf][row].length === 0 ? (
+                        <span className="empty-slot">Empty</span>
+                      ) : (
+                        mapMatrix[aisle.key][shelf][row].map((itemName, idx) => (
+                          <span key={idx} className="item-pill">{itemName}</span>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
           </div>
@@ -85,6 +110,7 @@ export default function ManageStoreMap() {
       </div>
 
       <div className="map-controls">
+        <h4>Assign Product to Location</h4>
         <select value={selectedItemId} onChange={(e) => setSelectedItemId(e.target.value)}>
           <option value="">Select Product</option>
           {items.map(item => (
@@ -95,7 +121,9 @@ export default function ManageStoreMap() {
         <select value={selectedAisle} onChange={(e) => setSelectedAisle(e.target.value)}>
           <option value="">Select Aisle</option>
           {aisles.map(aisle => (
-            <option key={aisle} value={aisle}>{aisle}</option>
+            <option key={aisle.key} value={aisle.key}>
+              {aisle.key} - {aisle.name}
+            </option>
           ))}
         </select>
 
@@ -106,7 +134,14 @@ export default function ManageStoreMap() {
           ))}
         </select>
 
-        <button onClick={handleUpdate}>Update Location</button>
+        <select value={selectedRow} onChange={(e) => setSelectedRow(e.target.value)}>
+          <option value="">Select Row</option>
+          {rows.map(row => (
+            <option key={row} value={row}>{row}</option>
+          ))}
+        </select>
+
+        <button className="update-btn" onClick={handleUpdate}>Update Location</button>
       </div>
     </div>
   );

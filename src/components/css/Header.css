@@ -1,0 +1,67 @@
+.header {
+  width: 100%;
+  position: fixed; /* stick to top */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 199, 0, 0.95); /* semi-transparent yellow */
+  backdrop-filter: blur(12px);
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+.logo img {
+  height: 50px; 
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap; /* prevent overflow */
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #FF0000;
+  transform: scale(1.05);
+}
+
+.logout-btn {
+  background-color: #FF0000;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 999px; /* pill button */
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.logout-btn:hover {
+  background-color: #d40000;
+  transform: scale(1.05);
+}
+
+/* Mobile Friendly Fix */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none; /* hide nav links on small screens */
+  }
+  .logout-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+}

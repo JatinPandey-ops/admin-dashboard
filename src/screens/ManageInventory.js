@@ -22,6 +22,10 @@ export default function ManageInventory() {
   }, []);
 
   const handleInventoryChange = (id, value) => {
+    if (value < 0) {
+      alert('❌ Inventory cannot be negative!');
+      return;
+    }
     setItems(prev =>
       prev.map(item =>
         item.id === id ? { ...item, inventory: value } : item
@@ -30,27 +34,36 @@ export default function ManageInventory() {
   };
 
   const saveInventory = async (item) => {
+    if (item.inventory < 0) {
+      alert('❌ Cannot save negative inventory!');
+      return;
+    }
     const itemRef = doc(db, 'items', item.id);
     await updateDoc(itemRef, { inventory: parseInt(item.inventory) });
-    alert(`Inventory for "${item.name}" updated!`);
+    alert(`✅ Inventory for "${item.name}" updated!`);
   };
 
   return (
     <div className="inventory-container">
-      <h2>Manage Inventory</h2>
+      <h2 className="page-title">Manage Inventory</h2>
       {loading ? (
-        <p>Loading items...</p>
+        <p className="loading-text">Loading items...</p>
       ) : (
         <div className="inventory-grid">
           {items.map(item => (
             <div key={item.id} className="inventory-card">
+              <img src={item.image} alt={item.name} className="item-image" />
               <p className="item-name">{item.name}</p>
+              <p className="current-inventory">Current: {item.inventory}</p>
               <input
                 type="number"
+                min="0"
                 value={item.inventory}
-                onChange={(e) => handleInventoryChange(item.id, e.target.value)}
+                onChange={(e) =>
+                  handleInventoryChange(item.id, parseInt(e.target.value))
+                }
               />
-              <button onClick={() => saveInventory(item)}>Update</button>
+              <button className="update-btn" onClick={() => saveInventory(item)}>Update</button>
             </div>
           ))}
         </div>
