@@ -3,13 +3,17 @@ body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #FFC700, #FFDA29);
+  background-image: url("../../../public/bg-img.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   height: 100%;
 }
 
 .page-title {
   font-size: 2.2rem;
   color: #FF0000;
+  text-shadow: 1px 1px 1px rgb(0, 0, 0);
   margin-bottom: 1.5rem;
   align-self: center;
 }
@@ -18,8 +22,9 @@ body, html {
 .dashboard-container {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100vh;
-  margin-top: 10rem;
 }
 
 /* Fixed header */
@@ -64,7 +69,7 @@ body, html {
 /* Body padding to offset header */
 .dashboard-body {
   display: flex;
-  flex-wrap: wrap; /* ✅ Cards wrap naturally */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
   padding: 2rem;
@@ -115,7 +120,6 @@ body, html {
   }
 
   .dashboard-body {
-    flex-direction: column;
     align-items: center;
   }
 

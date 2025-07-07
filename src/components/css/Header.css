@@ -1,13 +1,13 @@
 .header {
   width: 100%;
-  position: fixed; /* stick to top */
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255, 199, 0, 0.95); /* semi-transparent yellow */
+  background: rgba(255, 199, 0, 0.95);
   backdrop-filter: blur(12px);
   padding: 0.8rem 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -15,14 +15,14 @@
 }
 
 .logo img {
-  height: 50px; 
+  height: 50px;
   cursor: pointer;
 }
 
 .nav-links {
   display: flex;
   gap: 1.5rem;
-  flex-wrap: wrap; /* prevent overflow */
+  flex-wrap: wrap;
 }
 
 .nav-links a {
@@ -43,7 +43,7 @@
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 999px; /* pill button */
+  border-radius: 999px;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
@@ -55,13 +55,65 @@
   transform: scale(1.05);
 }
 
-/* Mobile Friendly Fix */
+/* Hamburger styles */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.bar {
+  width: 25px;
+  height: 2px;
+  background-color: #000;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.bar.open:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.bar.open:nth-child(2) {
+  opacity: 0;
+}
+.bar.open:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+.mobile-logout {
+  display: none;
+}
+/* Mobile styles */
 @media (max-width: 768px) {
   .nav-links {
-    display: none; /* hide nav links on small screens */
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    padding: 1rem;
+    gap: 1rem;
+    width: 180px;
   }
-  .logout-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.9rem;
+
+  .nav-links.mobile-open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .desktop-logout {
+    display: none; /* Hide Logout button in header on mobile */
+  }
+
+  .mobile-logout {
+    display: block; /* Show Logout button in dropdown */
+    width: 100%;
   }
 }

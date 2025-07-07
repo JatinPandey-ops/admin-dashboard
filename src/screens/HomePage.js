@@ -4,19 +4,14 @@ import './css/HomePage.css';
 import storeMapIcon from '../icons/store-map-icon.png';
 import manageItemIcon from '../icons/manage-items-icon.png';
 import inventoryIcon from '../icons/Inventory-icon.png';
-import activeCartsIcon from '../icons/active-carts-icon.jpg';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate('/login');
-  };
 
   return (
     <div className="dashboard-container">
-      <h2 className="page-title">Home</h2>
+      <h2 className="page-title">Admin Dashboard</h2>
         <div className="dashboard-body">
         <div className="dashboard-card" onClick={() => navigate('/manage-map')}>
           <img src={storeMapIcon} alt="Manage Store Map" />

@@ -23,6 +23,7 @@ const AdminLogin = () => {
   };
 
   return (
+    <div class="main-container">
     <div className="login-container">
       <div className="login-left">
         <img src={logo} alt="Logo" className="main-logo" />
@@ -52,6 +53,8 @@ const AdminLogin = () => {
           </button>
         </div>
       </div>
+    </div>
+
     </div>
   );
 };

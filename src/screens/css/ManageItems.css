@@ -2,18 +2,18 @@
 .manage-items-container {
   font-family: 'Poppins', sans-serif;
   padding: 2rem;
-  background: linear-gradient(135deg, #FFC700, #FFDA29);
   min-height: 100vh;
   color: #333;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 14rem;
+  margin-top: 3rem;
 }
 
 .page-title {
   font-size: 2.2rem;
   color: #FF0000;
+  text-shadow: 1px 1px 1px rgb(0, 0, 0);
   margin-bottom: 1.5rem;
 }
 
