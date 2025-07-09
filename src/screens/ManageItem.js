@@ -130,7 +130,7 @@ export default function ManageItems() {
             <img src={item.image} alt={item.name} className="item-image" />
             <div className="item-info">
               <p className="item-name">{item.name}</p>
-              <span className="item-price">MYR {item.price}</span>
+              <span className="item-price">{item.price} RM</span>
             </div>
             <div className="card-buttons">
               <button className="edit-btn" onClick={() => openDrawer(item)}>✏️ Edit</button>
