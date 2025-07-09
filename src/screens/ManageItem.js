@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, setDoc, deleteDoc, doc } from 'firebase/firestore';
 import './css/ManageItems.css';
 import usePageTitle from '../hooks/usePageTitle';
 
@@ -11,12 +11,16 @@ export default function ManageItems() {
   const [editingItemId, setEditingItemId] = useState(null);
   const [itemData, setItemData] = useState({ itemId: '', name: '', price: '', image: '' });
 
+  usePageTitle('Manage Items | MR.DIY Admin Dashboard');
+
   // Fetch all items from Firestore
   useEffect(() => {
     const fetchItems = async () => {
       const querySnapshot = await getDocs(collection(db, 'items'));
       const data = [];
-      querySnapshot.forEach(docSnap => data.push({ id: docSnap.id, ...docSnap.data() }));
+      querySnapshot.forEach(docSnap => {
+        data.push({ id: docSnap.id, ...docSnap.data() });
+      });
       setItems(data);
     };
     fetchItems();
@@ -34,40 +38,77 @@ export default function ManageItems() {
       return;
     }
 
-    if (editingItemId) {
-      // Update existing item
-      await updateDoc(doc(db, 'items', editingItemId), {
-        itemId: itemData.itemId,
-        name: itemData.name,
-        price: parseFloat(itemData.price),
-        image: itemData.image
-      });
+    const upperItemId = itemData.itemId.trim().toUpperCase();
+    const newDocRef = doc(db, 'items', upperItemId);
 
-      setItems(prev =>
-        prev.map(item =>
-          item.id === editingItemId ? { ...item, ...itemData, price: parseFloat(itemData.price) } : item
-        )
-      );
-      alert('✅ Item updated!');
-    } else {
-      // Add new item
-      const docRef = await addDoc(collection(db, 'items'), {
-        itemId: itemData.itemId,
+    try {
+      let preservedFields = {
+        inventory: 0,
+        location: '',
+      };
+
+      if (editingItemId) {
+        if (editingItemId !== upperItemId) {
+          // Fetch old doc data to preserve fields
+          const oldDocRef = doc(db, 'items', editingItemId);
+          const oldDocSnap = await getDoc(oldDocRef);
+          if (oldDocSnap.exists()) {
+            const oldData = oldDocSnap.data();
+            preservedFields = {
+              inventory: oldData.inventory ?? 0,
+              location: oldData.location ?? '',
+            };
+          }
+
+          // Delete old doc
+          await deleteDoc(oldDocRef);
+          console.log(`Deleted old doc with ID: ${editingItemId}`);
+        } else {
+          // Preserve fields if ID hasn’t changed
+          const currentItem = items.find(item => item.id === editingItemId);
+          preservedFields = {
+            inventory: currentItem?.inventory ?? 0,
+            location: currentItem?.location ?? '',
+          };
+        }
+      }
+
+      // Create new doc (with preserved fields)
+      await setDoc(newDocRef, {
+        itemId: upperItemId,
         name: itemData.name,
         price: parseFloat(itemData.price),
         image: itemData.image,
-        inventory: 0,
-        location: ''
+        inventory: preservedFields.inventory,
+        location: preservedFields.location,
       });
 
-      setItems([...items, {
-        id: docRef.id,
-        ...itemData,
-        price: parseFloat(itemData.price),
-        inventory: 0,
-        location: ''
-      }]);
-      alert('✅ Item added!');
+      // Update state
+      if (editingItemId) {
+        setItems(prev =>
+          prev.map(item =>
+            item.id === editingItemId
+              ? { ...item, ...itemData, id: upperItemId, itemId: upperItemId, price: parseFloat(itemData.price), ...preservedFields }
+              : item
+          )
+        );
+        alert('✅ Item updated!');
+      } else {
+        setItems(prev => [
+          ...prev,
+          {
+            id: upperItemId,
+            ...itemData,
+            itemId: upperItemId,
+            price: parseFloat(itemData.price),
+            ...preservedFields,
+          },
+        ]);
+        alert('✅ Item added!');
+      }
+    } catch (error) {
+      console.error('Error saving item:', error);
+      alert('⚠️ Failed to save item.');
     }
 
     // Reset and close drawer
@@ -82,7 +123,7 @@ export default function ManageItems() {
       itemId: item.itemId,
       name: item.name,
       price: item.price.toString(),
-      image: item.image
+      image: item.image,
     });
     setEditingItemId(item.id);
     setDrawerOpen(true);
@@ -102,7 +143,7 @@ export default function ManageItems() {
       alert('⚠️ Failed to delete item.');
     }
   };
- usePageTitle('Manage Items | MR.DIY Admin Dashboard');
+
   return (
     <div className="manage-items-container">
       <h2 className="page-title">Manage Items</h2>
@@ -149,7 +190,7 @@ export default function ManageItems() {
             type="text"
             placeholder="Item ID (RFID)"
             value={itemData.itemId}
-            onChange={(e) => setItemData({ ...itemData, itemId: e.target.value })}
+            onChange={(e) => setItemData({ ...itemData, itemId: e.target.value.toUpperCase() })}
           />
           <input
             type="text"
