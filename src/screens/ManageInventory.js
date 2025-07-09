@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
+import usePageTitle from '../hooks/usePageTitle';
 import './css/ManageInventory.css';
 
 export default function ManageInventory() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     const fetchItems = async () => {
       setLoading(true);
@@ -42,7 +43,7 @@ export default function ManageInventory() {
     await updateDoc(itemRef, { inventory: parseInt(item.inventory) });
     alert(`✅ Inventory for "${item.name}" updated!`);
   };
-
+   usePageTitle('Manage Inventory | MR.DIY Admin Dashboard');
   return (
     <div className="inventory-container">
       <h2 className="page-title">Manage Inventory</h2>

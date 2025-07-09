@@ -14,7 +14,7 @@
   color: #FF0000;
   text-shadow: 1px 1px 1px rgb(0, 0, 0);
   margin-bottom: 1.5rem;
-      text-align: center;
+  text-align: center;
 }
 
 .visual-map {
@@ -74,11 +74,29 @@
 }
 
 .item-pill {
+  display: inline-flex;
+  align-items: center;
   background: #FF0000;
   color: #fff;
   border-radius: 999px;
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
+  position: relative;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  margin-left: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.delete-btn:hover {
+  color: #FFD93D;
 }
 
 .empty-slot {
@@ -110,10 +128,12 @@
   color: #fff;
   border: none;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .update-btn:hover {
   background: #d40000;
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {

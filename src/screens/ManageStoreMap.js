@@ -7,6 +7,7 @@ import {
   updateDoc
 } from 'firebase/firestore';
 import './css/ManageStoreMap.css';
+import usePageTitle from '../hooks/usePageTitle';
 
 export default function ManageStoreMap() {
   const [items, setItems] = useState([]);
@@ -57,7 +58,21 @@ export default function ManageStoreMap() {
     alert('✅ Location updated!');
   };
 
-  // Build visual map matrix with Rows
+  const handleDeleteLocation = async (itemId) => {
+    const confirmDelete = window.confirm('Remove this item’s location?');
+    if (!confirmDelete) return;
+
+    const itemRef = doc(db, 'items', itemId);
+    await updateDoc(itemRef, { location: '' }); // Clear location in Firestore
+
+    const updatedItems = items.map(item =>
+      item.id === itemId ? { ...item, location: '' } : item
+    );
+    setItems(updatedItems);
+    alert('❌ Location removed!');
+  };
+
+  // Build visual map matrix
   const mapMatrix = {};
   aisles.forEach(aisle => {
     mapMatrix[aisle.key] = {};
@@ -71,9 +86,11 @@ export default function ManageStoreMap() {
   items.forEach(item => {
     const [aisle, shelf, row] = item.location?.split(', ').map(str => str.trim()) || [];
     if (mapMatrix[aisle]?.[shelf]?.[row]) {
-      mapMatrix[aisle][shelf][row].push(item.name);
+      mapMatrix[aisle][shelf][row].push({ name: item.name, id: item.id });
     }
   });
+
+  usePageTitle('Store Map | MR.DIY Admin Dashboard');
 
   return (
     <div className="map-container">
@@ -96,8 +113,17 @@ export default function ManageStoreMap() {
                       {mapMatrix[aisle.key][shelf][row].length === 0 ? (
                         <span className="empty-slot">Empty</span>
                       ) : (
-                        mapMatrix[aisle.key][shelf][row].map((itemName, idx) => (
-                          <span key={idx} className="item-pill">{itemName}</span>
+                        mapMatrix[aisle.key][shelf][row].map((item, idx) => (
+                          <span key={idx} className="item-pill">
+                            {item.name}
+                            <button
+                              className="delete-btn"
+                              onClick={() => handleDeleteLocation(item.id)}
+                              title="Remove Location"
+                            >
+                              ×
+                            </button>
+                          </span>
                         ))
                       )}
                     </div>

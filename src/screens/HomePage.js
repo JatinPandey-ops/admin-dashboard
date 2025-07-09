@@ -4,11 +4,12 @@ import './css/HomePage.css';
 import storeMapIcon from '../icons/store-map-icon.png';
 import manageItemIcon from '../icons/manage-items-icon.png';
 import inventoryIcon from '../icons/Inventory-icon.png';
+import usePageTitle from '../hooks/usePageTitle';
 
 const HomePage = () => {
   const navigate = useNavigate();
 
-
+ usePageTitle('Home | MR.DIY Admin Dashboard');
   return (
     <div className="dashboard-container">
       <h2 className="page-title">Admin Dashboard</h2>

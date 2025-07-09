@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import './css/ManageItems.css';
+import usePageTitle from '../hooks/usePageTitle';
 
 export default function ManageItems() {
   const [items, setItems] = useState([]);
@@ -101,7 +102,7 @@ export default function ManageItems() {
       alert('⚠️ Failed to delete item.');
     }
   };
-
+ usePageTitle('Manage Items | MR.DIY Admin Dashboard');
   return (
     <div className="manage-items-container">
       <h2 className="page-title">Manage Items</h2>
