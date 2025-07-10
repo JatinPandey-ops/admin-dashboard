@@ -4,7 +4,9 @@ import {
   collection,
   getDocs,
   doc,
-  updateDoc
+  updateDoc,
+  setDoc,
+  getDoc
 } from 'firebase/firestore';
 import './css/ManageStoreMap.css';
 import usePageTitle from '../hooks/usePageTitle';
@@ -15,6 +17,7 @@ export default function ManageStoreMap() {
   const [selectedAisle, setSelectedAisle] = useState('');
   const [selectedShelf, setSelectedShelf] = useState('');
   const [selectedRow, setSelectedRow] = useState('');
+  const [mapUrl, setMapUrl] = useState('');
 
   const aisles = [
     { key: 'Aisle 1', name: 'Beauty & Care' },
@@ -34,7 +37,17 @@ export default function ManageStoreMap() {
       });
       setItems(data);
     };
+
+    const fetchMapUrl = async () => {
+      const ref = doc(db, 'storemap', 'main');
+      const snap = await getDoc(ref);
+      if (snap.exists()) {
+        setMapUrl(snap.data().url || '');
+      }
+    };
+
     fetchItems();
+    fetchMapUrl();
   }, []);
 
   const handleUpdate = async () => {
@@ -63,7 +76,7 @@ export default function ManageStoreMap() {
     if (!confirmDelete) return;
 
     const itemRef = doc(db, 'items', itemId);
-    await updateDoc(itemRef, { location: '' }); // Clear location in Firestore
+    await updateDoc(itemRef, { location: '' });
 
     const updatedItems = items.map(item =>
       item.id === itemId ? { ...item, location: '' } : item
@@ -72,7 +85,12 @@ export default function ManageStoreMap() {
     alert('❌ Location removed!');
   };
 
-  // Build visual map matrix
+  const handleMapUrlSave = async () => {
+    const ref = doc(db, 'storemap', 'main');
+    await setDoc(ref, { url: mapUrl });
+    alert('✅ Store map URL saved!');
+  };
+
   const mapMatrix = {};
   aisles.forEach(aisle => {
     mapMatrix[aisle.key] = {};
@@ -167,7 +185,19 @@ export default function ManageStoreMap() {
           ))}
         </select>
 
+        <h4>Store Map Image URL</h4>
+        <input
+          type="text"
+          value={mapUrl}
+          className='url_placeholder'
+          onChange={(e) => setMapUrl(e.target.value)}
+          placeholder="Enter store map image URL"
+        />
         <button className="update-btn" onClick={handleUpdate}>Update Location</button>
+        <button className="update-btn" onClick={handleMapUrlSave}>Save Map URL</button>
+      </div>
+
+      <div className="map-url-section">
       </div>
     </div>
   );

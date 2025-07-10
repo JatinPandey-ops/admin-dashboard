@@ -110,7 +110,7 @@
 }
 
 .map-controls h4 {
-  color: #FF0000;
+  color: #000;
   margin-bottom: 1rem;
 }
 
@@ -135,6 +135,25 @@
   background: #d40000;
   transform: scale(1.05);
 }
+
+
+.map-url-section h4 {
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: #000000;
+  font-weight: 600;
+  text-align: center;
+}
+
+.url_placeholder {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    margin: 15px 0px;
+    width: 100%;
+}
+
+
 
 @media (max-width: 768px) {
   .aisle-card {
