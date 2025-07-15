@@ -122,7 +122,7 @@ export default function ManageItems() {
     setItemData({
       itemId: item.itemId,
       name: item.name,
-      price: item.price.toString(),
+      price: item.price.toFixed(2), // Format price for input
       image: item.image,
     });
     setEditingItemId(item.id);
@@ -172,7 +172,7 @@ export default function ManageItems() {
             <img src={item.image} alt={item.name} className="item-image" />
             <div className="item-info">
               <p className="item-name">{item.name}</p>
-              <span className="item-price">{item.price} RM</span>
+              <span className="item-price">RM {item.price.toFixed(2)}</span>
             </div>
             <div className="card-buttons">
               <button className="edit-btn" onClick={() => openDrawer(item)}>✏️ Edit</button>
